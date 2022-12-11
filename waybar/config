@@ -1,0 +1,128 @@
+{
+    "layer": "top", // Waybar at top layer
+    "position": "bottom", // Waybar position (top|bottom|left|right)
+    // "width": 1280, // Waybar width
+
+    // Choose the order of the modules
+    "modules-left": [
+        "custom/rofi",
+        "wlr/workspaces"
+    ],
+    "modules-center": [
+        "clock",
+        "backlight"
+    ],
+    "modules-right": [
+        "tray",
+    	"pulseaudio",
+        "battery",
+        "memory",
+        "custom/power"
+    ],
+
+    "wlr/workspaces": {
+         "disable-scroll": true,
+         "sort-by-name": true,
+         "format": " {icon} ",
+	 "on-click": "activate",
+	 "sort-by-number": true,
+         "format-icons": {
+             "1": "١" ,
+             "2": "٢" ,
+             "3": "٣" ,
+             "4": "٤" ,
+             "5": "٥" ,
+             "6": "٦" ,
+             "7": "٧" ,
+             "8": "٨" ,
+             "9": "٩" ,
+             "10": "٠" 
+         },
+     },
+
+    "tray": {
+        "icon-size": 21,
+        "spacing": 10
+    },
+
+    "custom/music": {
+        "format": "  {}",
+        "escape": true,
+        "interval": 5,
+        "tooltip": false,
+        "exec": "playerctl metadata --format='{{ title }}'",
+        "on-click": "playerctl play-pause",
+        "max-length": 50
+    },
+
+    "clock": {
+        "timezone": "Asia/Kolkata",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": " {:%d/%m/%Y}",
+        "format": " {:%H:%M}"
+    },
+
+    "network": {
+        "on-click": "kitty -e nmtui",
+        "format-wifi": "  {essid}",
+        "format-ethernet": " Disconnected",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "睊 Disconnected",
+        "tooltip-format-wifi": "Signal Strenght: {signalStrength}% | Down Speed: {bandwidthDownBits}, Up Speed: {bandwidthUpBits}",
+    },
+
+    "memory": {
+        "on-click": "kitty -e btop",
+        "interval": 5,
+        "format": " {}%"
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon}",
+        "format-icons": ["", "", "", "", "", "", "", "", ""],
+        "on-scroll-down": "light -A 5",
+        "on-scroll-up": "light -U 5"
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{icon} {capacity}%",
+        "format-icons": ["", "",  "", "", "", "", "", "", "", "", "", ""]
+    },
+
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{icon} {volume}%",
+        "format-muted": "",
+        "format-icons": {
+            "default": ["", "", " "]
+        },
+        "on-click": "pavucontrol"
+    },
+
+    "custom/lock": {
+        "tooltip": false,
+        "on-click": "sh -c '(sleep 0.5s; swaylock)' & disown",
+        "format": "",
+    },
+
+    "custom/rofi": {
+        "tooltip":false,
+        "on-click": "rofi -show drun",
+        "format":  ""
+    },
+
+    "custom/power": {
+        "tooltip": false,
+        "on-click": "rofi -show power-menu -modi power-menu:~/.config/rofi/bin/rofi-power-menu",
+        "format": "襤"
+    }
+}
+

@@ -1,5 +1,3 @@
-@import "latte.css";
-
 * {
     font-family: FantasqueSansMono Nerd Font;
     font-size: 17px;
@@ -8,31 +6,29 @@
 
 #waybar {
     background: transparent;
-    color: @text;
+    color: #4c4f69;
     margin: 5px 5px;
 }
 
 #workspaces {
     border-radius: 0px 1rem 1rem 0px;
     margin: 5px 0px;
-    background-color: @surface0;
-    /* margin-left: 1rem; */
+    background-color: #1E1E1E;
 }
 
 #workspaces button {
-    color: @lavender;
+    color: grey;
     border-radius: 1rem;
     padding: 0.4rem;
 }
 
 #workspaces button.active {
-    color: @sky;
+    color: white;
     border-radius: 1rem;
 }
 
 #workspaces button:hover {
-    background-color: @surface0;
-    color: @sapphire;
+    background-color: #1E1E1E;
     border-radius: 1rem;
 }
 
@@ -47,75 +43,38 @@
 #pulseaudio,
 #custom-lock,
 #custom-power {
-    background-color: @surface0;
+    background-color: #1E1E1E;
+    color: white;
     padding: 0.5rem 1rem;
     margin: 5px 0;
 }
 
-#memory {
-    color: @flamingo;
+#custom-rofi {
+    margin-left: 1rem;
+    border-radius: 1rem 0px 0px 1rem;
 }
 
 #clock {
     margin-left: 1rem;
     border-radius: 1rem 0px 0px 1rem;
-    color: @blue;
-}
-
-#battery {
-    color: @green;
-}
-
-#network {
-    color: @teal;
-}
-
-#battery.charging {
-    color: @green;
-}
-
-#battery.warning:not(.charging) {
-    color: @red;
 }
 
 #backlight, #battery {
     border-radius: 0;
 }
 
-#pulseaudio {
-    color: @maroon;
-}
-
-#custom-music {
-    color: @mauve;
-    border-radius: 1rem;
-}
-
 #backlight {
     margin-right: 1rem;
     border-radius: 0px 1rem 1rem 0px;
-    color: @yellow;
+}
+
+#pulseaudio {
+    border-radius: 1rem 0px 0px 1rem;
+    margin-left: 1rem;
 }
 
 #custom-power {
     margin-right: 1rem;
     border-radius: 0px 1rem 1rem 0px;
-    color: @red;
 }
 
-#custom-rofi {
-    margin-left: 1rem;
-    border-radius: 1rem 0px 0px 1rem;
-    color: @mauve;
-}
-
-#custom-lock {
-    border-radius: 0px 1rem 1rem 0px;
-    color: @lavender;
-}
-
-#tray {
-    border-radius: 1rem 0px 0px 1rem;
-    margin-left: 1rem;
-    background-color: @rosewater;
-}

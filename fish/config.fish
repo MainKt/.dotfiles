@@ -1,8 +1,4 @@
-source ~/.config/fish/aliases.fish
-# source ~/.config/fish/colors.fish
-
-# Configure Jump
-status --is-interactive; and source (autojump shell fish | psub)
+source ~/.config/fish/alias.fish
 
 # Vi Mode
 fish_vi_key_bindings
@@ -13,3 +9,5 @@ set fish_greeting ""
 # Starship prompt
 starship init fish | source
 
+# zoxide
+zoxide init fish | source

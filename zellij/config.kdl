@@ -275,12 +275,26 @@ themes {
         white "#424242"
         orange "#D75F5F"
     }
+
+    menace {
+        fg "#e3a555"
+        bg 40 42 54
+        red "#f74c17"
+        green 80 250 123
+        yellow 241 250 140
+        blue 98 114 164
+        magenta 255 121 198
+        orange 255 184 108
+        cyan 139 233 253
+        black "#04399d"
+        white 255 255 255
+    }
 }
 
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "one-half-dark"
+theme "kanagawa"
 
 // The name of the default layout to load on startup
 // Default: "default"

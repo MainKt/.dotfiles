@@ -3,13 +3,14 @@
     bg-col-light: #1E1E1E;
     border-col: #1E1E1E;
     selected-col: #1E1E1E;
-    blue: #1e66f5;
+    /* blue: #1e66f5; */
+    blue: #80A0FF;
     fg-col: grey;
     fg-col2: white;
     grey: #9ca0b0;
 
     width: 600;
-    font: "FantasqueSans Mono Nerd Font 14";
+    font: "Hurmit Nerd Font 14";
 }
 
 element-text, element-icon , mode-switcher {

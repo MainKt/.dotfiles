@@ -1,6 +1,6 @@
 # apps
 alias vim nvim
-alias ls exa
+alias ls "exa --icons"
 alias cat bat
 alias rm trash
 

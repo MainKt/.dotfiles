@@ -1,0 +1,11 @@
+import:
+  - ~/.config/alacritty/carbonfox.yaml
+
+font:
+  normal:
+    family: ComicShannsMonoNerdFont
+
+shell: fish
+
+key_bindings:
+  - { key: Back, mods: Control, chars: "\x17" }

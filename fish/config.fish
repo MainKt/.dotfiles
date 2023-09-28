@@ -1,13 +1,9 @@
 source ~/.config/fish/alias.fish
 
-# Vi Mode
-fish_vi_key_bindings
+set -gx VOLTA_HOME "$HOME/.volta"
+set -gx PATH "$VOLTA_HOME/bin" $PATH
 
-# Suppress greeting message
-set fish_greeting ""
+fish_add_path ~/.cargo/bin/
 
-# Starship prompt
-starship init fish | source
-
-# zoxide
 zoxide init fish | source
+starship init fish | source

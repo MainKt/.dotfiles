@@ -1,14 +1,19 @@
-configuration {
-    modi: "run,drun";
+configuration{
+    modi: "run,drun,clipboard:greenclip print,window";
+    icon-theme: "Papirus";
     show-icons: true;
-    terminal: "foot";
+    terminal: "alacritty";
     drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
     hide-scrollbar: true;
-    display-drun: "   Apps ";
-    display-run: "   Run ";
+    display-drun: " apps";
+    display-run: " run";
+    display-clipboard: "󰅇 clipboard";
+    display-window: "󱂬 windows";
+    display-Network: " 󰤨 ";
     sidebar-mode: true;
 }
 
-@theme "custom.rasi"
+@theme "custom"
+

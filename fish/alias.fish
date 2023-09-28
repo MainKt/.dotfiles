@@ -1,12 +1,15 @@
 # apps
 alias vim nvim
-alias ls "exa --icons"
+alias ls "eza --icons --long"
+alias man batman
 alias cat bat
-alias rm trash
+alias bat 'bat --theme Coldark-Dark'
+alias pick "slurp -p | grim -g - - | convert - txt: | tail -n 1"
+alias clip "xclip -sel clip"
 
 # ls
 alias la "ls -a"
-alias ll "ls --long"
+alias ll ls
 alias lla "ls --long -a"
 alias lt "ls --tree"
 

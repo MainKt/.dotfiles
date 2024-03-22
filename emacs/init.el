@@ -22,16 +22,9 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(setq inhibit-startup-screen t)
-
 (electric-pair-mode)
 
-(defun toggle-line-numbers () 
-  (setq display-line-numbers 'relative))
-(add-hook 'prog-mode-hook #'toggle-line-numbers)
+(add-hook 'prog-mode-hook (lambda () (setq display-line-numbers 'relative)))
 
 (add-hook 'prog-mode-hook #'eglot-ensure)
 (add-hook 'prog-mode-hook #'flymake-mode)
@@ -97,15 +90,11 @@
   :hook
   (prog-mode . diff-hl-mode))
 
-(use-package which-key :init (which-key-mode))
-
 (use-package orderless
   :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
-
-(use-package nerd-icons-dired :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package zig-mode)
 (use-package rust-mode)

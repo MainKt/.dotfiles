@@ -1,0 +1,8 @@
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+(push '(font . "Lilex Nerd Font-12") default-frame-alist)
+(setq inhibit-startup-screen t)
+(setq initial-buffer-choice nil)
+(setq display-line-numbers-type 'relative)
+(load-theme 'modus-vivendi)

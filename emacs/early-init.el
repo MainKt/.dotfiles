@@ -4,5 +4,4 @@
 (push '(font . "Lilex Nerd Font-12") default-frame-alist)
 (setq inhibit-startup-screen t)
 (setq initial-buffer-choice nil)
-(setq display-line-numbers-type 'relative)
 (load-theme 'modus-vivendi)

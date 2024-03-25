@@ -1,100 +1,95 @@
-;; Package managment
-(package-initialize)
+(require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
 (setq package-native-compile t)
 (setq use-package-always-ensure t)
 (setq use-package-always-defer t)
 
-
-;; Settings
-(define-key isearch-mode-map [escape] 'isearch-abort)
-(define-key isearch-mode-map "\e" 'isearch-abort)
-(global-set-key [escape] 'keyboard-escape-quit)
-
-(set-face-attribute 'default nil :font "Fira Code")
-
-(setq custom-file "~/.emacs.d/custom.el")
-(setq tab-always-indent 'complete)
-(setq completion-auto-select 'second-tab)
-
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
-
-(electric-pair-mode)
+(setq custom-file "~/.config/emacs/custom.el")
 
 (add-hook 'prog-mode-hook (lambda () (setq display-line-numbers 'relative)))
 
-(add-hook 'prog-mode-hook #'eglot-ensure)
-(add-hook 'prog-mode-hook #'flymake-mode)
+(global-hl-line-mode 1)
 
-(setq help-at-pt-display-when-idle t)
-
-;; thx ebn :)
-(add-to-list 'display-buffer-alist
-         '("\\*eshell\\*"
-           (display-buffer-in-side-window)
-           (side . bottom)
-           (slot . 0)
-           (window-parameters
-             (no-delete-other-windows . t))))
-
-(defun toggle-eshell ()
-  "Toggle eshell."
-  (interactive)
-  (if-let ((w (get-buffer-window "*eshell*")))
-      (delete-window w)
-    (eshell)))
-(global-set-key (kbd "C-c t e") #'toggle-eshell)
+(use-package exec-path-from-shell :init (exec-path-from-shell-initialize))
 
 
-;; Packages
-(use-package ef-themes :ensure t
-  :init
-  (load-theme 'ef-bio t))
-
-(use-package vertico :demand :config (vertico-mode))
-
-(use-package consult
-  :config 
-  (setq read-buffer-completion-ignore-case t
-	read-file-name-completion-ignore-case t
-	completion-ignore-case t))
-
-(use-package corfu
-  :demand
-  :custom
-  (corfu-auto t)
-  :config
-  (global-corfu-mode))
+(use-package undo-fu)
 
 (use-package evil
+  :demand t
   :ensure t
   :init
-  (setq evil-want-C-u-scroll t)
   (setq evil-want-keybinding nil)
-  (evil-mode 1))
+  (setq evil-undo-system 'undo-fu)
+  :config (evil-mode 1))
 
 (use-package evil-collection
   :after evil
   :ensure t
-  :init
-  (evil-collection-init))
+  :config (evil-collection-init))
 
-(use-package magit :config (setq magit-diff-refine-hunk t))
 
-(use-package diff-hl
-  :config
-  (diff-hl-flydiff-mode t)
-  :hook
-  (prog-mode . diff-hl-mode))
+(use-package vertico :init (vertico-mode))
 
 (use-package orderless
   :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package marginalia :init (marginalia-mode))
+
+(use-package consult
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+  :init
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
+  (advice-add #'register-preview :override #'consult-register-window)
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+  :config
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-file-register
+   consult--source-recent-file consult--source-project-recent-file
+   :preview-key '(:debounce 0.4 any))
+  (setq consult-narrow-key "<"))
+
+
+(use-package corfu
+  :init
+  (global-corfu-mode))
+
+(use-package cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block))
+
+
+(use-package emacs
+  :init
+  (setq completion-cycle-threshold 3)
+  (setq tab-always-indent 'complete)
+  (setq text-mode-ispell-word-completion nil)
+  (setq read-extended-command-predicate #'command-completion-default-include-p))
+
+
+(use-package magit :config (setq magit-diff-refine-hunk t))
+
+(use-package diff-hl
+  :after magit
+  :config
+  (diff-hl-flydiff-mode t)
+  :hook
+  (magit-pre-refresh . (lambda () (diff-hl-magit-pre-refresh)))
+  (magit-post-refresh . (lambda () (diff-hl-magit-post-refresh)))
+  (prog-mode . diff-hl-mode))
+
 
 (use-package zig-mode)
 (use-package rust-mode)

@@ -52,6 +52,10 @@ vim.keymap.set('n', '<leader>`', '<Cmd>b#<CR>', { desc = 'Last buffer' })
 vim.keymap.set('n', '<leader>bd', '<Cmd>bd<CR>', { desc = '[B]uffer [D]elete' })
 vim.keymap.set('n', '<leader>bk', '<Cmd>bd<CR>', { desc = '[B]uffer [K]ill' })
 
+vim.keymap.set('n', '<leader>qn', '<Cmd>cn<CR>', { desc = '[Q]uick [N]ext' })
+vim.keymap.set('n', '<leader>qp', '<Cmd>cp<CR>', { desc = '[Q]uick [P]revious' })
+vim.keymap.set('n', '<leader>ql', '<Cmd>cl<CR>', { desc = '[Q]uick [L]ist' })
+
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>ce', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
@@ -64,6 +68,12 @@ vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+
+vim.api.nvim_create_autocmd('BufEnter', {
+  callback = function()
+    vim.opt.formatoptions = vim.opt.formatoptions - { 'c', 'r', 'o' }
+  end,
+})
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -215,6 +225,8 @@ require('lazy').setup {
           map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
 
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
+          map('<leader>=', vim.lsp.buf.format, 'Format buffer')
 
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
@@ -587,4 +599,13 @@ require('lazy').setup {
   { 'echasnovski/mini.pairs', opts = {} },
 
   { 'nvim-treesitter/nvim-treesitter-context' },
+
+  {
+    'ThePrimeagen/refactoring.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    opts = {},
+  },
 }

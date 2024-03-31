@@ -1,0 +1,10 @@
+#!/bin/bash
+
+session=$(basename $(pwd))
+tmux new-session -d -s $session
+tmux split-window -v -t $sesssion 1
+tmux new-window -t $session
+tmux select-window -t 1
+tmux select-pane -t 1
+tmux resize-pane -Z
+tmux attach-session -t $session

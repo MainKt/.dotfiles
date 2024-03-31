@@ -6,6 +6,13 @@ setopt autocd beep extendedglob nomatch notify nocaseglob
 bindkey -v
 zstyle :compinstall filename "$HOME/.zshrc"
 
+bindkey "^[[3~" delete-char
+bindkey  "^[[H"   beginning-of-line
+bindkey  "^[[F"   end-of-line
+
+bindkey -s '^[t' 'mux\r'
+bindkey -s '^[e' 'nvim .\r'
+
 autoload -Uz compinit
 compinit
 

@@ -4,6 +4,8 @@ vim.g.maplocalleader = ' '
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+vim.api.nvim_exec('autocmd TermOpen * setlocal nonu nornu', false)
+
 vim.opt.mouse = 'a'
 
 vim.opt.showmode = false
@@ -40,8 +42,11 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
-vim.keymap.set('n', '<leader>fs', '<cmd>w<CR>')
+vim.keymap.set('n', '<leader>fs', '<cmd>w<CR>', { desc = '[F]ile [S]ave' })
 vim.keymap.set('n', '<leader>w', '<C-w>')
+
+vim.keymap.set('n', '<leader>t', '<cmd>split term://zsh<CR>', { desc = '[T]erminal vsplit' })
+vim.keymap.set('n', '<leader>T', '<cmd>tabnew term://zsh<CR>', { desc = '[T]erminal tabnew' })
 
 -- vim.keymap.set('n', '<leader>o-', '<Cmd>Ex<CR>', { desc = '[O]pen Netrw' })
 vim.keymap.set('n', '<leader>o-', '<Cmd>Oil<CR>', { desc = '[O]pen Oil' })
@@ -58,9 +63,9 @@ vim.keymap.set('n', '<leader>ql', '<Cmd>cl<CR>', { desc = '[Q]uick [L]ist' })
 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>ce', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+-- vim.keymap.set('n', '<leader>ce', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>cx', vim.diagnostic.setloclist, { desc = 'Open diagnostic Quickfix list' })
+vim.keymap.set('n', '<leader>ce', vim.diagnostic.setloclist, { desc = 'Open diagnostic Quickfix list' })
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
@@ -117,10 +122,15 @@ require('lazy').setup {
       -- Document existing key chains
       require('which-key').register {
         ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+        ['<leader>d'] = { name = '[D]ebug', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]indow', _ = 'which_key_ignore' },
+        ['<leader>b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
+        ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+        ['<leader>q'] = { name = '[Q]uickfix list', _ = 'which_key_ignore' },
+        ['<leader>o'] = { name = '[O]pen', _ = 'which_key_ignore' },
+        ['<leader>f'] = { name = '[F]ile', _ = 'which_key_ignore' },
+        ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -158,35 +168,35 @@ require('lazy').setup {
       pcall(require('telescope').load_extension, 'ui-select')
 
       local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>h', builtin.help_tags, { desc = 'Search [H]elp' })
+      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Search Files' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>*', builtin.grep_string, { desc = 'Search current Word' })
       vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Search by Grep' })
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+      vim.keymap.set('n', '<leader>cx', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', "<leader>'", builtin.resume, { desc = 'Search Resume' })
       vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = 'Search Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>,', builtin.buffers, { desc = 'Find existing buffers' })
       vim.keymap.set('n', '<leader>bi', builtin.buffers, { desc = 'Find existing buffers' })
 
-      vim.keymap.set('n', '<leader>sb', function()
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+      vim.keymap.set('n', '<leader>f/', function()
+        builtin.current_buffer_fuzzy_find(require('telescope/themes').get_dropdown {
           winblend = 10,
           previewer = false,
         })
-      end, { desc = 'Fuzzily search in current buffer' })
+      end, { desc = '[F]uzzily search in current buffer' })
 
-      vim.keymap.set('n', '<leader>s/', function()
+      vim.keymap.set('n', '<leader>o/', function()
         builtin.live_grep {
           grep_open_files = true,
           prompt_title = 'Live Grep in Open Files',
         }
       end, { desc = '[S]earch [/] in Open Files' })
 
-      vim.keymap.set('n', '<leader>sn', function()
+      vim.keymap.set('n', '<leader>fp', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N]eovim files' })
+      end, { desc = 'Search Neovim files' })
     end,
   },
 
@@ -497,26 +507,22 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>oh', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end, { desc = '[O]pen [H]arpoon UI' })
+      vim.keymap.set('n', '<leader>ho', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end, { desc = '[H]arpoon [O]pen UI' })
 
-      vim.keymap.set('n', '<leader>1', function()
-        harpoon:list():select(1)
-      end)
-      vim.keymap.set('n', '<leader>2', function()
-        harpoon:list():select(2)
-      end)
-      vim.keymap.set('n', '<leader>3', function()
-        harpoon:list():select(3)
-      end)
-      vim.keymap.set('n', '<leader>4', function()
-        harpoon:list():select(4)
-      end)
+      for i = 1, 9 do
+        vim.keymap.set('n', '<leader>' .. i, function()
+          harpoon:list():select(i)
+        end, { desc = 'Harpoon [' .. i .. ']' })
+      end
 
       vim.keymap.set('n', '<leader>hp', function()
         harpoon:list():prev()
-      end, { desc = 'Toggle [P]revious buffers stored within Harpoon list' })
+      end, { desc = '[H]arpoon [P]revious' })
       vim.keymap.set('n', '<leader>hn', function()
         harpoon:list():next()
-      end, { desc = 'Toggle [N]ext buffers stored within Harpoon list' })
+      end, { desc = '[H]arpoon [N]ext' })
     end,
   },
 

@@ -50,8 +50,9 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('x', '<leader>p', '"_dP', { desc = 'black hole and Paste' })
 
-vim.keymap.set('n', '<leader>t', '<cmd>split term://zsh<CR>', { desc = '[T]erminal vsplit' })
-vim.keymap.set('n', '<leader>T', '<cmd>tabnew term://zsh<CR>', { desc = '[T]erminal tabnew' })
+vim.keymap.set('n', '<leader>ts', '<cmd>split term://zsh<CR>', { desc = '[T]erminal horizontal [S]plit' })
+vim.keymap.set('n', '<leader>tv', '<cmd>vsplit term://zsh<CR>', { desc = '[T]erminal [V]ertical Split' })
+vim.keymap.set('n', '<leader>tt', '<cmd>tabnew term://zsh<CR>', { desc = '[T]erminal [T]ab' })
 
 -- vim.keymap.set('n', '<leader>o-', '<Cmd>Ex<CR>', { desc = '[O]pen Netrw' })
 vim.keymap.set('n', '<leader>o-', '<Cmd>Oil<CR>', { desc = '[O]pen Oil' })
@@ -73,6 +74,7 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagn
 vim.keymap.set('n', '<leader>ce', vim.diagnostic.setloclist, { desc = 'Open diagnostic Quickfix list' })
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<C-[>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
@@ -136,6 +138,7 @@ require('lazy').setup {
         ['<leader>o'] = { name = '[O]pen', _ = 'which_key_ignore' },
         ['<leader>f'] = { name = '[F]ile', _ = 'which_key_ignore' },
         ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
+        ['<leader>t'] = { name = '[T]erminal', _ = 'which_key_ignore' },
       }
     end,
   },

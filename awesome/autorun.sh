@@ -15,7 +15,7 @@ run cbatticon
 run wmname LG3D
 run blueman-applet
 run kitty --title sysmon --class sysmon btop --utf-force
-run xinput disable 17
+run xinput disable 18
 run unclutter
 run feh --bg-fill --randomize ~/pics/wallpapers/
-sleep 3 && run volumeicon
+sleep 10 && run volumeicon

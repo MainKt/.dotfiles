@@ -1,13 +1,21 @@
+-- If LuaRocks is installed, make sure that packages installed through it are
+-- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
+-- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
+-- Widget and layout library
 local wibox = require("wibox")
+-- Theme handling library
 local beautiful = require("beautiful")
+-- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+-- Enable hotkeys help widget for VIM and other apps
+-- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
 -- {{{ Error handling
@@ -50,7 +58,7 @@ beautiful.init(theme_path)
 beautiful.useless_gap = 5
 
 -- This is used later as the default terminal and editor to run.
-terminal = "kitty tmux"
+terminal = "kitty"
 browser = "brave"
 editor = "emacsclient -nc"
 editor_cmd = terminal .. " -e " .. editor
@@ -65,21 +73,21 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	awful.layout.suit.tile,
-	-- awful.layout.suit.max,
-	-- awful.layout.suit.floating,
-	-- awful.layout.suit.tile.left,
-	-- awful.layout.suit.tile.bottom,
-	-- awful.layout.suit.tile.top,
-	-- awful.layout.suit.fair,
-	-- awful.layout.suit.fair.horizontal,
-	-- awful.layout.suit.spiral,
-	-- awful.layout.suit.spiral.dwindle,
-	-- awful.layout.suit.max.fullscreen,
+	awful.layout.suit.max,
+	awful.layout.suit.floating,
+	awful.layout.suit.tile.left,
+	awful.layout.suit.tile.bottom,
+	awful.layout.suit.tile.top,
+	awful.layout.suit.fair,
+	awful.layout.suit.fair.horizontal,
+	awful.layout.suit.spiral,
+	awful.layout.suit.spiral.dwindle,
+	awful.layout.suit.max.fullscreen,
 	awful.layout.suit.magnifier,
-	-- awful.layout.suit.corner.nw,
-	-- awful.layout.suit.corner.ne,
-	-- awful.layout.suit.corner.sw,
-	-- awful.layout.suit.corner.se,
+	awful.layout.suit.corner.nw,
+	awful.layout.suit.corner.ne,
+	awful.layout.suit.corner.sw,
+	awful.layout.suit.corner.se,
 }
 -- }}}
 
@@ -241,6 +249,8 @@ awful.screen.connect_for_each_screen(function(s)
 			s.mylayoutbox,
 		},
 	})
+
+	s.mywibox.visible = false
 end)
 -- }}}
 
@@ -257,9 +267,9 @@ local touchpad_enabled = false
 globalkeys = gears.table.join(
 	awful.key({ modkey, "Mod1" }, "Tab", function()
 		if touchpad_enabled then
-			awful.spawn("xinput disable 17")
+			awful.spawn("xinput disable 18")
 		else
-			awful.spawn("xinput enable 17")
+			awful.spawn("xinput enable 18")
 		end
 		touchpad_enabled = not touchpad_enabled
 	end, { description = "toggle touchpad" }),
@@ -327,6 +337,15 @@ globalkeys = gears.table.join(
 		end
 	end, { description = "go back", group = "client" }),
 
+	-- screenshot utils
+	awful.key({}, "Print", function()
+		awful.spawn("scrot pics/screenshots/%m-%d-%Y-%H%M%S.png")
+	end, { description = "Fullscreen Screenshot", group = "Screenshot" }),
+
+	awful.key({ "Shift" }, "Print", function()
+		awful.spawn("scrot -fs pics/screenshots/%m-%d-%Y-%H%M%S.png")
+	end, { description = "Region Selection Screenshot", group = "Screenshot" }),
+
 	-- brightness controls
 	awful.key({}, "XF86MonBrightnessDown", function()
 		awful.spawn("brightnessctl set 10%-")
@@ -358,6 +377,9 @@ globalkeys = gears.table.join(
 	awful.key({ modkey, "Shift" }, "Escape", function()
 		awful.spawn("slock")
 	end, { description = "lock screen", group = "awesome" }),
+	awful.key({ modkey, "Mod1" }, "Escape", function()
+		awful.spawn("systemctl suspend")
+	end, { description = "Suspend", group = "awesome" }),
 	awful.key({ modkey }, "e", function()
 		awful.spawn(editor)
 	end, { description = "open editor", group = "launcher" }),
@@ -421,6 +443,9 @@ clientkeys = gears.table.join(
 		c.fullscreen = not c.fullscreen
 		c:raise()
 	end, { description = "toggle fullscreen", group = "client" }),
+	awful.key({ modkey }, "c", function(c)
+		awful.placement.centered(c)
+	end, { description = "center the focused window", group = "client" }),
 	awful.key({ modkey, "Shift" }, "q", function(c)
 		c:kill()
 	end, { description = "close", group = "client" }),
@@ -631,6 +656,11 @@ client.connect_signal("request::titlebars", function(c)
 	})
 end)
 
+-- Enable sloppy focus, so that focus follows mouse.
+-- client.connect_signal("mouse::enter", function(c)
+--     c:emit_signal("request::activate", "mouse_enter", {raise = false})
+-- end)
+
 client.connect_signal("focus", function(c)
 	c.border_color = beautiful.border_focus
 end)
@@ -655,4 +685,4 @@ client.connect_signal("sleep", function(c)
 end)
 
 -- Autostart
-awful.spawn.with_shell("/home/dayf/.config/awesome/autorun.sh")
+awful.spawn.with_shell(".config/awesome/autorun.sh")

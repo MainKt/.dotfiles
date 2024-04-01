@@ -5,6 +5,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 vim.api.nvim_exec('autocmd TermOpen * setlocal nonu nornu', false)
+vim.api.nvim_exec('autocmd TermOpen * startinsert', false)
 
 vim.opt.mouse = 'a'
 
@@ -44,6 +45,10 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 vim.keymap.set('n', '<leader>fs', '<cmd>w<CR>', { desc = '[F]ile [S]ave' })
 vim.keymap.set('n', '<leader>w', '<C-w>')
+
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
+vim.keymap.set('x', '<leader>p', '"_dP', { desc = 'black hole and Paste' })
 
 vim.keymap.set('n', '<leader>t', '<cmd>split term://zsh<CR>', { desc = '[T]erminal vsplit' })
 vim.keymap.set('n', '<leader>T', '<cmd>tabnew term://zsh<CR>', { desc = '[T]erminal tabnew' })
@@ -614,4 +619,6 @@ require('lazy').setup {
     },
     opts = {},
   },
+
+  { 'ThePrimeagen/vim-be-good' },
 }

@@ -1,17 +1,19 @@
+vim.cmd.colorscheme 'habamax'
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.opt.number = true
 vim.opt.relativenumber = true
 
-vim.api.nvim_exec('autocmd TermOpen * setlocal nonu nornu', false)
-vim.api.nvim_exec('autocmd TermOpen * startinsert', false)
+vim.api.nvim_exec('autocmd TermEnter * setlocal nonu nornu', false)
+vim.api.nvim_exec('autocmd TermLeave * setlocal nu rnu', false)
 
 vim.opt.mouse = 'a'
 
 vim.opt.showmode = false
 
-vim.opt.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
 
 vim.opt.breakindent = true
 
@@ -53,6 +55,7 @@ vim.keymap.set('x', '<leader>p', '"_dP', { desc = 'black hole and Paste' })
 vim.keymap.set('n', '<leader>ts', '<cmd>split term://zsh<CR>', { desc = '[T]erminal horizontal [S]plit' })
 vim.keymap.set('n', '<leader>tv', '<cmd>vsplit term://zsh<CR>', { desc = '[T]erminal [V]ertical Split' })
 vim.keymap.set('n', '<leader>tt', '<cmd>tabnew term://zsh<CR>', { desc = '[T]erminal [T]ab' })
+vim.keymap.set('n', '<leader>tb', '<cmd>term<CR>', { desc = '[T]erminal [B]uffer' })
 
 -- vim.keymap.set('n', '<leader>o-', '<Cmd>Ex<CR>', { desc = '[O]pen Netrw' })
 vim.keymap.set('n', '<leader>o-', '<Cmd>Oil<CR>', { desc = '[O]pen Oil' })
@@ -61,7 +64,6 @@ vim.keymap.set('n', '<leader>bp', '<Cmd>bp<CR>', { desc = '[B]uffer [P]revious' 
 vim.keymap.set('n', '<leader>bn', '<Cmd>bn<CR>', { desc = '[B]uffer [N]ext' })
 vim.keymap.set('n', '<leader>`', '<Cmd>b#<CR>', { desc = 'Last buffer' })
 vim.keymap.set('n', '<leader>bd', '<Cmd>bd<CR>', { desc = '[B]uffer [D]elete' })
-vim.keymap.set('n', '<leader>bk', '<Cmd>bd<CR>', { desc = '[B]uffer [K]ill' })
 
 vim.keymap.set('n', '<leader>qn', '<Cmd>cn<CR>', { desc = '[Q]uick [N]ext' })
 vim.keymap.set('n', '<leader>qp', '<Cmd>cp<CR>', { desc = '[Q]uick [P]revious' })
@@ -69,12 +71,11 @@ vim.keymap.set('n', '<leader>ql', '<Cmd>cl<CR>', { desc = '[Q]uick [L]ist' })
 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
--- vim.keymap.set('n', '<leader>ce', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>ce', vim.diagnostic.setloclist, { desc = 'Open diagnostic Quickfix list' })
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('t', '<C-[>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
@@ -187,13 +188,14 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = 'Search Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>,', builtin.buffers, { desc = 'Find existing buffers' })
       vim.keymap.set('n', '<leader>bi', builtin.buffers, { desc = 'Find existing buffers' })
+      vim.keymap.set('n', '<leader>j', builtin.jumplist, { desc = 'Telescope [J]umplist' })
 
-      vim.keymap.set('n', '<leader>f/', function()
+      vim.keymap.set('n', '<leader>b/', function()
         builtin.current_buffer_fuzzy_find(require('telescope/themes').get_dropdown {
           winblend = 10,
           previewer = false,
         })
-      end, { desc = '[F]uzzily search in current buffer' })
+      end, { desc = 'Fuzzily search in current [B]uffer' })
 
       vim.keymap.set('n', '<leader>o/', function()
         builtin.live_grep {
@@ -336,12 +338,8 @@ require('lazy').setup {
     dependencies = {
       {
         'L3MON4D3/LuaSnip',
-        build = (function()
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-            return
-          end
-          return 'make install_jsregexp'
-        end)(),
+        version = 'v2.*',
+        build = 'make install_jsregexp',
       },
       'saadparwaiz1/cmp_luasnip',
 
@@ -354,6 +352,7 @@ require('lazy').setup {
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
+      require('luasnip.loaders.from_vscode').lazy_load()
 
       cmp.setup {
         snippet = {
@@ -392,20 +391,29 @@ require('lazy').setup {
     end,
   },
 
-  {
-    'folke/tokyonight.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'tokyonight-night'
+  -- {
+  --   'shaunsingh/solarized.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     vim.cmd.colorscheme 'solarized'
+  --   end,
+  -- },
 
-      vim.cmd.hi 'Comment gui=none'
-
-      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-      vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'none' })
-    end,
-  },
+  -- {
+  --   'folke/tokyonight.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     vim.cmd.colorscheme 'tokyonight-night'
+  --
+  --     vim.cmd.hi 'Comment gui=none'
+  --
+  --     vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+  --     vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+  --     vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'none' })
+  --   end,
+  -- },
 
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -519,7 +527,7 @@ require('lazy').setup {
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end, { desc = '[H]arpoon [O]pen UI' })
 
-      for i = 1, 9 do
+      for i = 1, 5 do
         vim.keymap.set('n', '<leader>' .. i, function()
           harpoon:list():select(i)
         end, { desc = 'Harpoon [' .. i .. ']' })
@@ -624,4 +632,6 @@ require('lazy').setup {
   },
 
   { 'ThePrimeagen/vim-be-good' },
+
+  { 'tiagovla/scope.nvim', opts = {} },
 }

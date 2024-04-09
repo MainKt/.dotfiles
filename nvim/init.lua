@@ -8,12 +8,17 @@ vim.opt.relativenumber = true
 
 vim.api.nvim_exec('autocmd TermEnter * setlocal nonu nornu', false)
 vim.api.nvim_exec('autocmd TermLeave * setlocal nu rnu', false)
+vim.api.nvim_create_autocmd('WinLeave', {
+  callback = function()
+    if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'i' then
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes([[<C-\><C-n>]], true, false, true), 'i', false)
+    end
+  end,
+})
 
 vim.opt.mouse = 'a'
 
 vim.opt.showmode = false
-
--- vim.opt.clipboard = 'unnamedplus'
 
 vim.opt.breakindent = true
 
@@ -63,7 +68,15 @@ vim.keymap.set('n', '<leader>o-', '<Cmd>Oil<CR>', { desc = '[O]pen Oil' })
 vim.keymap.set('n', '<leader>bp', '<Cmd>bp<CR>', { desc = '[B]uffer [P]revious' })
 vim.keymap.set('n', '<leader>bn', '<Cmd>bn<CR>', { desc = '[B]uffer [N]ext' })
 vim.keymap.set('n', '<leader>`', '<Cmd>b#<CR>', { desc = 'Last buffer' })
-vim.keymap.set('n', '<leader>bd', '<Cmd>bd<CR>', { desc = '[B]uffer [D]elete' })
+vim.keymap.set('n', '<leader>bd', function()
+  -- '<Cmd>bp<CR><Cmd>bd<space>#<CR>'
+  vim.api.nvim_command 'bp'
+  if not pcall(function()
+    vim.api.nvim_command 'bd #'
+  end) then
+    vim.api.nvim_command 'bd'
+  end
+end, { desc = '[B]uffer [D]elete' })
 
 vim.keymap.set('n', '<leader>qn', '<Cmd>cn<CR>', { desc = '[Q]uick [N]ext' })
 vim.keymap.set('n', '<leader>qp', '<Cmd>cp<CR>', { desc = '[Q]uick [P]revious' })
@@ -187,7 +200,7 @@ require('lazy').setup {
       vim.keymap.set('n', "<leader>'", builtin.resume, { desc = 'Search Resume' })
       vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = 'Search Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>,', builtin.buffers, { desc = 'Find existing buffers' })
-      vim.keymap.set('n', '<leader>bi', builtin.buffers, { desc = 'Find existing buffers' })
+      vim.keymap.set('n', '<leader>bt', builtin.buffers, { desc = 'Find existing [B]uffers for [T]ab' })
       vim.keymap.set('n', '<leader>j', builtin.jumplist, { desc = 'Telescope [J]umplist' })
 
       vim.keymap.set('n', '<leader>b/', function()
@@ -633,5 +646,16 @@ require('lazy').setup {
 
   { 'ThePrimeagen/vim-be-good' },
 
-  { 'tiagovla/scope.nvim', opts = {} },
+  {
+    'tiagovla/scope.nvim',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      require('scope').setup {}
+      require('telescope').load_extension 'scope'
+      vim.keymap.set('n', '<leader>bi', '<Cmd>Telescope scope buffers<Cr>', { desc = 'Find existing buffers' })
+      vim.keymap.set('n', '<leader>bm', '<Cmd>ScopeMoveBuf<Cr>', { desc = 'Find existing buffers' })
+    end,
+  },
 }

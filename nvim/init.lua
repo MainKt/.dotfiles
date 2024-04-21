@@ -1,5 +1,3 @@
-vim.cmd.colorscheme 'habamax'
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -64,9 +62,14 @@ vim.keymap.set('n', '<leader>tb', '<cmd>term<CR>', { desc = '[T]erminal [B]uffer
 
 -- vim.keymap.set('n', '<leader>o-', '<Cmd>Ex<CR>', { desc = '[O]pen Netrw' })
 vim.keymap.set('n', '<leader>o-', '<Cmd>Oil<CR>', { desc = '[O]pen Oil' })
+vim.keymap.set('n', '<leader>-', '<Cmd>Oil<CR>', { desc = 'Open Oil' })
+vim.keymap.set('n', '-', '<Cmd>Oil<CR>', { desc = 'Open Oil' })
 
 vim.keymap.set('n', '<leader>bp', '<Cmd>bp<CR>', { desc = '[B]uffer [P]revious' })
 vim.keymap.set('n', '<leader>bn', '<Cmd>bn<CR>', { desc = '[B]uffer [N]ext' })
+vim.keymap.set('n', '<leader>bl', '<Cmd>blast<CR>', { desc = '[B]uffer [L]ast' })
+vim.keymap.set('n', '<leader>bf', '<Cmd>bfirst<CR>', { desc = '[B]uffer [F]irst' })
+vim.keymap.set('n', '<leader>bb', '<Cmd>buffers<CR>', { desc = '[B]uffers' })
 vim.keymap.set('n', '<leader>`', '<Cmd>b#<CR>', { desc = 'Last buffer' })
 vim.keymap.set('n', '<leader>bd', function()
   -- '<Cmd>bp<CR><Cmd>bd<space>#<CR>'
@@ -178,7 +181,11 @@ require('lazy').setup {
     },
     config = function()
       require('telescope').setup {
-
+        pickers = {
+          find_files = {
+            hidden = true,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -404,6 +411,15 @@ require('lazy').setup {
     end,
   },
 
+  {
+    'nyoom-engineering/oxocarbon.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'oxocarbon'
+    end,
+  },
+
   -- {
   --   'shaunsingh/solarized.nvim',
   --   lazy = false,
@@ -435,8 +451,6 @@ require('lazy').setup {
     config = function()
       require('mini.ai').setup { n_lines = 500 }
 
-      require('mini.surround').setup()
-
       local statusline = require 'mini.statusline'
       statusline.setup()
 
@@ -453,7 +467,7 @@ require('lazy').setup {
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
+        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'go', 'rust' },
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
@@ -658,4 +672,17 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>bm', '<Cmd>ScopeMoveBuf<Cr>', { desc = 'Find existing buffers' })
     end,
   },
+
+  {
+    'windwp/nvim-ts-autotag',
+    ft = {
+      'javascript',
+      'javascriptreact',
+      'typescript',
+      'typescriptreact',
+    },
+    opts = {},
+  },
+
+  'tpope/vim-surround',
 }

@@ -33,8 +33,8 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
-vim.bo.tabstop = 4
-vim.bo.shiftwidth = 4
+vim.bo.tabstop = 2
+vim.bo.shiftwidth = 2
 
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
@@ -48,12 +48,15 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
-vim.keymap.set('n', '<leader>fs', '<cmd>w<CR>', { desc = '[F]ile [S]ave' })
+-- vim.keymap.set('n', '<leader>fs', '<cmd>w<CR>', { desc = '[F]ile [S]ave' })
 vim.keymap.set('n', '<leader>w', '<C-w>')
 
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('x', '<leader>p', '"_dP', { desc = 'black hole and Paste' })
+
+vim.keymap.set('n', '<leader>nt', '<cmd>tabnew<CR>', { desc = '[N]ew [T]ab' })
+vim.keymap.set('n', '<leader>nb', '<cmd>enew<CR>', { desc = '[N]ew [B]uffer' })
 
 vim.keymap.set('n', '<leader>ts', '<cmd>split term://zsh<CR>', { desc = '[T]erminal horizontal [S]plit' })
 vim.keymap.set('n', '<leader>tv', '<cmd>vsplit term://zsh<CR>', { desc = '[T]erminal [V]ertical Split' })
@@ -238,6 +241,7 @@ require('lazy').setup {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       { 'j-hui/fidget.nvim', opts = {} },
+      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -306,8 +310,9 @@ require('lazy').setup {
               workspace = {
                 checkThirdParty = false,
                 library = {
-                  '${3rd}/luv/library',
-                  unpack(vim.api.nvim_get_runtime_file('', true)),
+                  vim.env.VIMRUNTIME,
+                  -- '${3rd}/luv/library',
+                  -- unpack(vim.api.nvim_get_runtime_file('', true)),
                 },
               },
               completion = {
@@ -475,66 +480,66 @@ require('lazy').setup {
     end,
   },
 
-  {
-    'mfussenegger/nvim-dap',
-    dependencies = {
-      'rcarriga/nvim-dap-ui',
-
-      'williamboman/mason.nvim',
-      'jay-babu/mason-nvim-dap.nvim',
-
-      'leoluz/nvim-dap-go',
-      'jonboh/nvim-dap-rr',
-    },
-    config = function()
-      local dap = require 'dap'
-      local dapui = require 'dapui'
-
-      require('mason-nvim-dap').setup {
-        automatic_setup = true,
-
-        handlers = {},
-
-        ensure_installed = {
-          'delve',
-        },
-      }
-
-      vim.keymap.set('n', '<leader>dc', dap.continue, { desc = 'Debug: Start/Continue' })
-      vim.keymap.set('n', '<leader>di', dap.step_into, { desc = 'Debug: Step Into' })
-      vim.keymap.set('n', '<leader>dj', dap.step_over, { desc = 'Debug: Step Over' })
-      vim.keymap.set('n', '<leader>do', dap.step_out, { desc = 'Debug: Step Out' })
-      vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
-      vim.keymap.set('n', '<leader>dB', function()
-        dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-      end, { desc = 'Debug: Set Breakpoint' })
-
-      dapui.setup {
-        icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
-        controls = {
-          icons = {
-            pause = '⏸',
-            play = '▶',
-            step_into = '⏎',
-            step_over = '⏭',
-            step_out = '⏮',
-            step_back = 'b',
-            run_last = '▶▶',
-            terminate = '⏹',
-            disconnect = '⏏',
-          },
-        },
-      }
-
-      vim.keymap.set('n', '<leader>dl', dapui.toggle, { desc = 'Debug: See last session result.' })
-
-      dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-      dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-      dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
-      require('dap-go').setup()
-    end,
-  },
+  -- {
+  --   'mfussenegger/nvim-dap',
+  --   dependencies = {
+  --     'rcarriga/nvim-dap-ui',
+  --
+  --     'williamboman/mason.nvim',
+  --     'jay-babu/mason-nvim-dap.nvim',
+  --
+  --     'leoluz/nvim-dap-go',
+  --     'jonboh/nvim-dap-rr',
+  --   },
+  --   config = function()
+  --     local dap = require 'dap'
+  --     local dapui = require 'dapui'
+  --
+  --     require('mason-nvim-dap').setup {
+  --       automatic_setup = true,
+  --
+  --       handlers = {},
+  --
+  --       ensure_installed = {
+  --         'delve',
+  --       },
+  --     }
+  --
+  --     vim.keymap.set('n', '<leader>dc', dap.continue, { desc = 'Debug: Start/Continue' })
+  --     vim.keymap.set('n', '<leader>di', dap.step_into, { desc = 'Debug: Step Into' })
+  --     vim.keymap.set('n', '<leader>dj', dap.step_over, { desc = 'Debug: Step Over' })
+  --     vim.keymap.set('n', '<leader>do', dap.step_out, { desc = 'Debug: Step Out' })
+  --     vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
+  --     vim.keymap.set('n', '<leader>dB', function()
+  --       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+  --     end, { desc = 'Debug: Set Breakpoint' })
+  --
+  --     dapui.setup {
+  --       icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
+  --       controls = {
+  --         icons = {
+  --           pause = '⏸',
+  --           play = '▶',
+  --           step_into = '⏎',
+  --           step_over = '⏭',
+  --           step_out = '⏮',
+  --           step_back = 'b',
+  --           run_last = '▶▶',
+  --           terminate = '⏹',
+  --           disconnect = '⏏',
+  --         },
+  --       },
+  --     }
+  --
+  --     vim.keymap.set('n', '<leader>dl', dapui.toggle, { desc = 'Debug: See last session result.' })
+  --
+  --     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
+  --     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
+  --     dap.listeners.before.event_exited['dapui_config'] = dapui.close
+  --
+  --     require('dap-go').setup()
+  --   end,
+  -- },
 
   {
     'ThePrimeagen/harpoon',
@@ -585,7 +590,7 @@ require('lazy').setup {
       'ibhagwan/fzf-lua',
     },
     config = (function()
-      vim.keymap.set('n', '<leader>gg', '<Cmd>Neogit<CR>', { desc = '[G]it' })
+      vim.keymap.set('n', '<leader>gg', '<Cmd>Neogit kind=auto<CR>', { desc = '[G]it' })
       vim.keymap.set('n', '<leader>gp', '<Cmd>Neogit push<CR>', { desc = '[G]it' })
 
       return true
@@ -641,7 +646,13 @@ require('lazy').setup {
 
   {
     'stevearc/oil.nvim',
-    opts = {},
+    opts = {
+      keymaps = {
+        ['<C-v>'] = 'actions.select_vsplit',
+        ['<C-s>'] = 'actions.select_split',
+      },
+      skip_confirm_for_simple_edits = true,
+    },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
 

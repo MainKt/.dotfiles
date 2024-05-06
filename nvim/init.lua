@@ -269,12 +269,15 @@ require('lazy').setup {
           map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
 
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          vim.keymap.set('v', '<leader>ca', vim.lsp.buf.code_action, { desc = '[C]ode [A]ction' })
 
           map('<leader>=', vim.lsp.buf.format, 'Format buffer')
 
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+
+          vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = event.buf, desc = 'LSP: Function signature' })
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.server_capabilities.documentHighlightProvider then
@@ -472,8 +475,8 @@ require('lazy').setup {
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'go', 'rust' },
-        auto_install = true,
+        ensure_installed = { 'bash', 'c', 'lua', 'markdown', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'go', 'rust' },
+        auto_install = false,
         highlight = { enable = true },
         indent = { enable = true },
       }

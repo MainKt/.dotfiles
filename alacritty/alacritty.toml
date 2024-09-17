@@ -1,0 +1,19 @@
+import = [
+  "~/.config/alacritty/themes/carbonfox.toml"
+]
+
+shell = "zsh"
+
+# [window]
+# opacity = 0.8
+
+[font.normal]
+family = "Monaco"
+
+[keyboard]
+bindings = [
+  { key = "Back", mods = "Control", chars = "\u0017" }
+]
+
+[cursor]
+vi_mode_style = { shape = "Block" }

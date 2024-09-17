@@ -7,15 +7,10 @@ run() {
   fi
 }
 
-run picom --no-fading-openclose
-run lxpolkit
+run picom
+run /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
 run dunst
-run nm-applet
-run cbatticon
 run wmname LG3D
-run blueman-applet
-run kitty --title sysmon --class sysmon btop --utf-force
-run xinput disable 18
+run alacritty --class sysmon -e btop
 run unclutter
-run feh --bg-fill --randomize ~/pics/wallpapers/
-sleep 10 && run volumeicon
+run feh --bg-scale --randomize ~/pics/wallpapers/

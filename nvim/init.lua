@@ -1,16 +1,15 @@
 ---@diagnostic disable: missing-fields
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+  local out = vim.fn.system({ 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath })
   if vim.v.shell_error ~= 0 then
     error('Error cloning lazy.nvim:\n' .. out)
   end
 end
 vim.opt.rtp:prepend(lazypath)
-
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+vim.g.mapleader = ' '
+vim.g.maplocalleader = '\\'
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -25,8 +24,13 @@ vim.opt.termguicolors = true
 vim.opt.guicursor = ''
 vim.opt.inccommand = 'split'
 
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+
+vim.api.nvim_create_autocmd({'TermEnter', 'TermLeave'}, {
+  command = 'set invnu invrnu',
+})
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>w', '<C-w>')
@@ -63,20 +67,20 @@ local spec = {
   'tpope/vim-fugitive',
   'mbbill/undotree',
   'nvim-tree/nvim-web-devicons',
-  "neovim/nvim-lspconfig",
+  'neovim/nvim-lspconfig',
 
   { 'numToStr/Comment.nvim',   opts = {} },
   { 'lewis6991/gitsigns.nvim', opts = {} },
-  { "dundalek/lazy-lsp.nvim",  opts = {}, },
+  { 'dundalek/lazy-lsp.nvim',  opts = {}, },
   { 'j-hui/fidget.nvim',       opts = {} },
   { 'stevearc/oil.nvim',       opts = { skip_confirm_for_simple_edits = true } },
 
   {
-    "folke/lazydev.nvim",
-    ft = "lua",
-    dependencies = { { "Bilal2453/luvit-meta", lazy = true } },
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    dependencies = { { 'Bilal2453/luvit-meta', lazy = true } },
     opts = {
-      library = { { path = "luvit-meta/library", words = { "vim%.uv" } } },
+      library = { { path = 'luvit-meta/library', words = { 'vim%.uv' } } },
     },
   },
 
@@ -94,11 +98,11 @@ local spec = {
   },
 
   {
-    "nvim-treesitter/nvim-treesitter",
+    'nvim-treesitter/nvim-treesitter',
     dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
+      'nvim-treesitter/nvim-treesitter-textobjects',
     },
-    build = ":TSUpdate",
+    build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup({
         auto_install = true,
@@ -107,7 +111,7 @@ local spec = {
           select = {
             enable = true,
             lookahead = true,
-            keymaps = { ["as"] = "@block.outer", ["is"] = "@block.inner" },
+            keymaps = { ['as'] = '@block.outer', ['is'] = '@block.inner' },
           },
         },
       })
@@ -189,8 +193,8 @@ local spec = {
   },
 }
 
-require("lazy").setup({
+require('lazy').setup({
   spec = spec,
-  install = { colorscheme = { "default" } },
+  install = { colorscheme = { 'default' } },
   checker = { enabled = true },
 })
